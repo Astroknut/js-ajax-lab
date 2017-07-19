@@ -1,5 +1,5 @@
-//Prevent default form submission
 
+//Display list of all API objects
 var listCats = function(){
 	$.ajax({
 		type: "GET",
@@ -14,7 +14,7 @@ var listCats = function(){
 };
 
 
-
+//Create object from form input
 var newCat = $("#new-cat").submit(function(event) {
 	event.preventDefault();
 
@@ -22,8 +22,9 @@ var newCat = $("#new-cat").submit(function(event) {
 		name: $('#cat-name').val(),
 		note: $('#cat-note').val()
 	};
-	console.log(catObj);
 
+
+	//POST object to API(stingified version)
 	$.ajax({
 		type: "POST",
 		url: 'https://ga-cat-rescue.herokuapp.com/api/cats',
@@ -31,6 +32,8 @@ var newCat = $("#new-cat").submit(function(event) {
 		data: JSON.stringify(catObj)
 	});
 
+
+	//Get API objects and display in list under form
 	$.ajax({
 	type: "GET",
 	url: 'https://ga-cat-rescue.herokuapp.com/api/cats',
@@ -41,11 +44,9 @@ var newCat = $("#new-cat").submit(function(event) {
 		});
 	}
 });
+	//Run function to update list without page refresh
 	listCats();
 });
 
+//Initial run of function to display list of objects on page load
 listCats();
-
-
-
-//For loop to diaplay all objs as separate li
