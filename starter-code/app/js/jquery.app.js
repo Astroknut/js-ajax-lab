@@ -1,31 +1,50 @@
 //Prevent default form submission
-$('#new-cat').on('submit', function(event){
-	console.log("clicked");
+
+var listCats = function(){
+	$.ajax({
+		type: "GET",
+		url: 'https://ga-cat-rescue.herokuapp.com/api/cats',
+		dataType: 'json',
+		success: function(data){
+			data.forEach(function(el){
+				$('#cats').append("<li>" + el.name + " - " + el.note + "</li>");
+			});
+		}
+	});
+};
+
+
+
+var newCat = $("#new-cat").submit(function(event) {
 	event.preventDefault();
-	//push to api
+
+	let catObj = {
+		name: $('#cat-name').val(),
+		note: $('#cat-note').val()
+	};
+	console.log(catObj);
+
+	$.ajax({
+		type: "POST",
+		url: 'https://ga-cat-rescue.herokuapp.com/api/cats',
+		dataType: 'json',
+		data: JSON.stringify(catObj)
+	});
+
+	$.ajax({
+	type: "GET",
+	url: 'https://ga-cat-rescue.herokuapp.com/api/cats',
+	dataType: 'json',
+	success: function(data){
+		data.forEach(function(el){
+			$('#cats').append("<li>" + el.name + " - " + el.note + "</li>");
+		});
+	}
+});
+	listCats();
 });
 
-
-
-//Collected forms data into object
-
-	// #cat-name
-	// #cat-note
-
-
-
-
-//Send object to API
-	//https://ga-cat-rescue.herokuapp.com/api/cats
-
-$.post('https://ga-cat-rescue.herokuapp.com/api/cats', '{"name": " ", "note": " "}');
-
-
-
-
-//Display API contents in list below forms
-	//#cats(ul)
-// <li>obj.name + " - " + obj.note</li>
+listCats();
 
 
 
